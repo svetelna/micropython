@@ -37,6 +37,32 @@ jobs:
         - tools/codeformat.py
         - git diff --exit-code
 
+    # zephyr port
+    - stage: test
+      name: "zephyr port build"
+      services:
+        - docker
+      before_install:
+        - docker pull zephyrprojectrtos/zephyr-build:v0.12
+      install:
+        - sudo apt-get install python3-pip
+        - sudo pip3 install west
+        - west init --mr v2.3.0 /zephyrproject
+        - cd /zephyrproject
+        - west update
+        - >
+          docker run --name zephyr-build -d -it
+          -v "$(pwd)":/micropython
+          -v /zephyrproject/zephyr:/workdir
+          -w /micropython/ports/zephyr
+          zephyrprojectrtos/zephyr-build:v0.12
+        - docker ps -a
+      script:
+        - docker exec zephyr-build ./make-minimal ${MAKEOPTS} BOARD=frdm_k64f
+        - docker exec zephyr-build make ${MAKEOPTS} BOARD=frdm_k64f
+        - docker exec zephyr-build make ${MAKEOPTS} BOARD=mimxrt1050_evk
+        - docker exec zephyr-build make ${MAKEOPTS} BOARD=reel_board
+
     # unix port on OSX (first in list because the build VM takes a long time to start)
     - stage: test
       os: osx
