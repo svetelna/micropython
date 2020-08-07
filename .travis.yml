@@ -57,7 +57,9 @@ jobs:
         - docker exec -w /zephyrproject zephyr-ci west update
         - docker exec -w /zephyrproject zephyr-ci west zephyr-export
       script:
+        - docker exec zephyr-ci bash -c "make clean; ./make-minimal"
         - docker exec zephyr-ci bash -c "make clean; ./make-minimal ${MAKEOPTS} BOARD=frdm_k64f"
+        - docker exec zephyr-ci bash -c "make clean; make"
         - docker exec zephyr-ci bash -c "make clean; make ${MAKEOPTS} BOARD=frdm_k64f"
         - docker exec zephyr-ci bash -c "make clean; make ${MAKEOPTS} BOARD=mimxrt1050_evk"
         - docker exec zephyr-ci bash -c "make clean; make ${MAKEOPTS} BOARD=reel_board"
