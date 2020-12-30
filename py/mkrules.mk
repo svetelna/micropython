@@ -12,6 +12,7 @@ ifeq ($(MICROPY_ROM_TEXT_COMPRESSION),1)
 OBJ_EXTRA_ORDER_DEPS += $(HEADER_BUILD)/compressed.data.h
 # ...and enable the MP_COMPRESSED_ROM_TEXT macro (used by MP_ERROR_TEXT).
 CFLAGS += -DMICROPY_ROM_TEXT_COMPRESSION=1
+CFLAGS += -Wno-error
 endif
 
 # QSTR generation uses the same CFLAGS, with these modifications.

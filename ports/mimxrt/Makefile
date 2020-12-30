@@ -11,6 +11,10 @@ endif
 include ../../py/mkenv.mk
 include $(BOARD_DIR)/mpconfigboard.mk
 
+# use FROZEN_MANIFEST for new projects, others are legacy
+# FROZEN_MANIFEST ?= variants/manifest.py
+
+
 # Qstr definitions (must come before including py.mk)
 QSTR_DEFS = qstrdefsport.h
 QSTR_GLOBAL_DEPENDENCIES = $(BOARD_DIR)/mpconfigboard.h
@@ -38,9 +42,10 @@ INC += -I$(TOP)/$(MCU_DIR)/project_template
 INC += -I$(TOP)/lib/tinyusb/src
 INC += -I$(TOP)/lib/tinyusb/hw
 INC += -I$(TOP)/lib/tinyusb/hw/bsp/teensy_40
+INC += -I$(TOP)/lib/lv_bindings
 
 CFLAGS_MCU = -mtune=cortex-m7 -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
-CFLAGS += $(INC) -Wall -Werror -Wdouble-promotion -Wfloat-conversion -std=c99 -nostdlib -mthumb $(CFLAGS_MCU)
+CFLAGS += $(INC) -Wall -Wdouble-promotion -Wfloat-conversion -std=c99 -nostdlib -mthumb $(CFLAGS_MCU)
 CFLAGS += -DCPU_$(MCU_SERIES) -DCPU_$(MCU_VARIANT)
 CFLAGS += -DXIP_EXTERNAL_FLASH=1 \
 	-DXIP_BOOT_HEADER_ENABLE=1 \
@@ -106,6 +111,7 @@ SRC_C = \
 	lib/utils/stdout_helpers.c \
 	$(SRC_TINYUSB_C) \
 	$(SRC_TINYUSB_IMX_C) \
+	$(SRC_MOD) \
 
 SRC_SS = $(MCU_DIR)/gcc/startup_$(MCU_SERIES).S
 

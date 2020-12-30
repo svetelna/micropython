@@ -70,6 +70,7 @@
 // Extended modules
 #define MICROPY_PY_UTIME_MP_HAL             (1)
 #define MICROPY_PY_MACHINE                  (1)
+#define MICROPY_PY_LVGL                     (1)
 
 // Hooks to add builtins
 
@@ -79,11 +80,29 @@
 extern const struct _mp_obj_module_t mp_module_machine;
 extern const struct _mp_obj_module_t mp_module_utime;
 
+extern const struct _mp_obj_module_t mp_module_lvgl;
+/*extern const struct _mp_obj_module_t mp_module_lvindev;
+extern const struct _mp_obj_module_t mp_module_SDL;
+extern const struct _mp_obj_module_t mp_module_fb;
+extern const struct _mp_obj_module_t mp_module_lodepng;
+    { MP_OBJ_NEW_QSTR(MP_QSTR_SDL), (mp_obj_t)&mp_module_SDL },\
+    { MP_OBJ_NEW_QSTR(MP_QSTR_fb), (mp_obj_t)&mp_module_fb },\
+    { MP_OBJ_NEW_QSTR(MP_QSTR_lodepng), (mp_obj_t)&mp_module_lodepng },
+    { MP_OBJ_NEW_QSTR(MP_QSTR_lvindev), (mp_obj_t)&mp_module_lvindev},\
+*/
+
+#include "lib/lv_bindings/lvgl/src/lv_misc/lv_gc.h"
+#define MICROPY_PY_LVGL_DEF \
+    { MP_OBJ_NEW_QSTR(MP_QSTR_lvgl), (mp_obj_t)&mp_module_lvgl },\
+
 #define MICROPY_PORT_BUILTIN_MODULES \
     { MP_ROM_QSTR(MP_QSTR_machine), MP_ROM_PTR(&mp_module_machine) }, \
     { MP_ROM_QSTR(MP_QSTR_utime), MP_ROM_PTR(&mp_module_utime) }, \
+	MICROPY_PY_LVGL_DEF
 
 #define MICROPY_PORT_ROOT_POINTERS \
+	LV_ROOTS \
+    void *mp_lv_user_data; \
     const char *readline_hist[8];
 
 #define MP_STATE_PORT MP_STATE_VM
