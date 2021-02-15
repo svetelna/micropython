@@ -35,9 +35,14 @@ endif
 INC += -I.
 INC += -I$(TOP)
 INC += -I$(BUILD)
+INC += -I$(ZEPHYR_BASE)/micropython
 INC += -I$(ZEPHYR_BASE)/net/ip
 INC += -I$(ZEPHYR_BASE)/net/ip/contiki
 INC += -I$(ZEPHYR_BASE)/net/ip/contiki/os
+INC += -I$(TOP)/lib/lv_bindings
+INC += -I$(TOP)/lib/lv_bindings/driver/zephyr
+INC += -I$(ZEPHYR_BASE)/include
+INC += -I$(TOP)/lib/lv_bindings/lvgl
 
 SRC_C = main.c \
 	help.c \
@@ -59,6 +64,7 @@ SRC_C = main.c \
 	lib/utils/pyexec.c \
 	lib/utils/interrupt_char.c \
 	lib/mp-readline/readline.c \
+	build/lvgl/lv_mpy.c \
 	$(SRC_MOD)
 
 # List of sources for qstr extraction
