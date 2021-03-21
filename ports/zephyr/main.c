@@ -31,8 +31,6 @@
 #include <string.h>
 
 #include <zephyr.h>
-#include <lvgl.h>
-#include "my_lvgl.h"
 #ifdef CONFIG_NETWORKING
 #include <net/net_context.h>
 #endif
@@ -43,7 +41,6 @@
 
 #include <storage/flash_map.h>
 #include <device.h>
-#include <drivers/display.h>
 
 #include "py/mperrno.h"
 #include "py/compile.h"
