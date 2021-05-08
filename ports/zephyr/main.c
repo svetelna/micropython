@@ -65,6 +65,11 @@
 #include TEST
 #endif
 
+//#define BOOT_TIME  1
+#ifdef BOOT_TIME
+#include <tc_util.h>
+#include <kernel_internal.h>
+#endif
 static char heap[MICROPY_HEAP_SIZE];
 
 void init_zephyr(void) {
@@ -150,6 +155,13 @@ soft_reset:
     vfs_init();
     #endif
 
+	#ifdef BOOT_TIME
+	uint32_t time_stamp = k_cycle_get_32();
+    uint32_t main_us =  (uint32_t)ceiling_fraction(USEC_PER_SEC *
+                      (uint64_t)time_stamp,
+                      sys_clock_hw_cycles_per_sec());
+    printf("boot time: %u us", main_us);
+	#else
     #if MICROPY_MODULE_FROZEN || MICROPY_VFS
     pyexec_file_if_exists("main.py");
     #endif
@@ -175,6 +187,7 @@ soft_reset:
 
     goto soft_reset;
 
+	#endif // BOOT_TIME
     return 0;
 }
 

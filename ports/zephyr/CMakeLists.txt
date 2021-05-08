@@ -10,6 +10,12 @@ set_target_properties(libmicropython PROPERTIES IMPORTED_LOCATION ${CMAKE_CURREN
 target_link_libraries(app PUBLIC libmicropython)
 target_link_libraries(libmicropython INTERFACE kernel)
 
+target_include_directories(app PRIVATE
+  ${ZEPHYR_BASE}/kernel/include
+  ${ZEPHYR_BASE}/lib
+  ${ZEPHYR_BASE}/arch/${ARCH}/include
+  )
+
 zephyr_get_include_directories_for_lang_as_string(C includes)
 zephyr_get_system_include_directories_for_lang_as_string(C system_includes)
 zephyr_get_compile_definitions_for_lang_as_string(C definitions)
@@ -23,3 +29,4 @@ add_custom_target(
   VERBATIM
   USES_TERMINAL
 )
+
